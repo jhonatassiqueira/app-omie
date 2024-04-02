@@ -29,10 +29,7 @@ app.use('/webhook/new-service-invoice', async (req, res) => {
 
     MessageText(numberTelefone, message)
 
-    return res.json({
-        "status": 200,
-        "message": req.body
-    })
+    res.status(200).json(req.body)
 })
 
 app.use('/', (req, res) => {
