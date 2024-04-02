@@ -5,6 +5,8 @@ const { MessageText } = require('./digisac')
 
 const app = express();
 
+const port = process.env.PORT ?? 3000
+
 app.use(express.json());
 
 app.use('/webhook/new-service-invoice', async (req, res) => {
@@ -30,16 +32,14 @@ app.use('/webhook/new-service-invoice', async (req, res) => {
     console.log(message)
 
 
-    res.send({
+    return res.json({
         "status": 200,
         "message": "Integration success!"
     })
 })
 
 app.use('/', (req, res) => {
-    res.send('Servidor logado!')
+    return res.send('Servidor logado!')
 })
 
-app.listen(process.env.PORT, () => {
-    console.log('servidor em execução');
-})
+app.listen(port, () => console.log('Server is running on port ', port))
