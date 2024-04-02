@@ -29,6 +29,7 @@ app.use('/webhook/new-service-invoice', async (req, res) => {
 
     MessageText(numberTelefone, message)
 
+    res.send('Servidor logado!...')
     res.status(200).json(req.body)
 })
 
