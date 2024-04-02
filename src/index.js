@@ -29,12 +29,9 @@ app.use('/webhook/new-service-invoice', async (req, res) => {
 
     MessageText(numberTelefone, message)
 
-    console.log(message)
-
-
     return res.json({
         "status": 200,
-        "message": "Integration success!"
+        "message": req.body
     })
 })
 
