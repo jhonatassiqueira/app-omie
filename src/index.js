@@ -31,4 +31,8 @@ app.post('/v1/webhooks/new-service-invoice', async (req, res) => {
         res.json('')
 })
 
+app.use('/teste', (req, res) => {
+    res.json('')
+})
+
 app.listen(port, () => console.log('Server is running on port ', port))
