@@ -13,10 +13,10 @@ app.use(express.json());
 
 app.route('/v1/webhooks/new-service-invoice')
     .get((req, res) => res.json(''))
-    .post(async (req, res) => {
-        const sendMessage = await SendMessageNewInvoice(req.body.event.idOrdemServico, req.body.event.idCliente)
+    .post((req, res) => {
+        const sendMessage = SendMessageNewInvoice(req.body.event.idOrdemServico, req.body.event.idCliente)
         
-        return res.json({message: sendMessage})
+        return res.json('')
     })
 
 
