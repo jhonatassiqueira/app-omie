@@ -17,7 +17,7 @@ app.route('/v1/webhooks/new-service-invoice')
 
         var valBody = Object.keys(req.body).length
 
-        if(valBody === 0 && req.body.topic !== "OrdemServico.Faturada"){
+        if(valBody === 0 && req.body.event.idOrdemServico === ""){
             return res.json('')
         }else{
             var idOrderService = await req.body.event.idOrdemServico
