@@ -9,8 +9,8 @@ const port = process.env.PORT ?? 3000
 
 app.use(express.json());
 
-app.post('/webhook/new-service-invoice', async (req, res) => {
-    var idOrderService = req.body.event.idOrdemServico
+app.use('/webhook/new-service-invoice', async (req, res) => {
+    var idOrderService = await req.body.event.idOrdemServico
     var codClient = req.body.event.idCliente
     var client = await SearchInformationClient(codClient)
     var nameClient = client.razao_social
@@ -29,7 +29,6 @@ app.post('/webhook/new-service-invoice', async (req, res) => {
 
     MessageText(numberTelefone, message)
 
-    res.send("Integration success!")
     res.status(200).json(req.body)
 })
 
