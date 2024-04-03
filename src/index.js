@@ -9,11 +9,7 @@ const port = process.env.PORT ?? 3000
 
 app.use(express.json());
 
-app.use('/v1/webhooks/new-service-invoice', async (req, res) => {
-    
-    if(req.method === 'GET'){
-        return res.json('')
-    }else{
+app.post('/v1/webhooks/new-service-invoice', async (req, res) => {
         var idOrderService = await req.body.event.idOrdemServico
         var codClient = req.body.event.idCliente
         var client = await SearchInformationClient(codClient)
@@ -27,14 +23,12 @@ app.use('/v1/webhooks/new-service-invoice', async (req, res) => {
         var dueDate = account.data_vencimento
         var numberTelefone = "+55" + client.telefone1_ddd + client.telefone1_numero
     
-    
         var message = `
             Olá ${nameClient}!\n\nA nota fiscal ${numberInvoice} com vencimento em ${dueDate} no valor de ${valueInvoice} está disponível!\n\n*Clique no link para acessar a Nota Fiscal/Boleto*\n${linkOrderService}`
     
         MessageText(numberTelefone, message)
     
-        res.status(200).json(req.body)
-    }
+        res.json('')
 })
 
 app.listen(port, () => console.log('Server is running on port ', port))
