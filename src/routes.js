@@ -16,12 +16,13 @@ app.route('/v1/webhooks/new-service-invoice')
 
 
         var valBody = Object.keys(req.body).length
-
+        
         if(valBody === 0){
             return res.json('')
         }else{
+            var events = Object.keys(req.body.event)
 
-            if(!req.body.event.idOrdemServico){
+            if(events === 0){
                 return res.json('')
             }
 
