@@ -14,7 +14,7 @@ app.route('/v1/webhooks/new-service-invoice')
     .get((req, res) => res.json(''))
     .post(async(req, res) => {
 
-        if(req.body !== ''){
+        if(!req.body){
             var idOrderService = await req.body.event.idOrdemServico
             var codClient = req.body.event.idCliente
             var client = await SearchInformationClient(codClient)
