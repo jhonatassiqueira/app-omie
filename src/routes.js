@@ -17,7 +17,7 @@ app.route('/v1/webhooks/new-service-invoice')
 
         var valBody = Object.keys(req.body).length
 
-        if(valBody === 0 && req.body.event.idOrdemServico === ""){
+        if(valBody === 0){
             return res.json('')
         }else{
             var idOrderService = await req.body.event.idOrdemServico
@@ -38,7 +38,8 @@ app.route('/v1/webhooks/new-service-invoice')
         
             MessageText(numberTelefone, message)
         
-            return res.json({message: req.body})
+            res.status(200).json({message: req.body})
+            res.status(500).json('')
         }
     })
 
