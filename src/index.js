@@ -9,7 +9,7 @@ const port = process.env.PORT ?? 3000
 
 app.use(express.json());
 
-app.post('/v1/webhooks/new-service-invoice', async (req, res) => {
+app.use('/v1/webhooks/new-service-invoice', async (req, res) => {
         var idOrderService = await req.body.event.idOrdemServico
         var codClient = req.body.event.idCliente
         var client = await SearchInformationClient(codClient)
@@ -29,10 +29,6 @@ app.post('/v1/webhooks/new-service-invoice', async (req, res) => {
         MessageText(numberTelefone, message)
     
         res.json('')
-})
-
-app.use('/teste', (req, res) => {
-    res.json('')
 })
 
 app.listen(port, () => console.log('Server is running on port ', port))
