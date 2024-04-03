@@ -1,46 +1,33 @@
 require('dotenv').config();
 const express = require('express');
-const { SearchLinkOrderService, SearchInvoiceServices, SearchAccountReceive, SearchInformationClient } = require('./omie')
-const { MessageText } = require('./digisac')
+const path = require('path')
+const { writeJson } = require('./createJson')
 
 const app = express();
-
 const port = process.env.PORT ?? 3000
+
+// VARIÁVEIS GLOBAIS
+var now = new Date()
+var newDate = now.getFullYear() +'-' +(now.getMonth()+1) +'-' +now.getDay() +'-' +now.getTime()
+
 
 app.use(express.json());
 
 
-app.route('/v1/webhooks/new-service-invoice')
-    .get((req, res) => res.json(''))
-    .post(async(req, res) => {
+app.post('/v1/webhooks/omie', (req, res) => {
 
+    var valBody = Object.keys(req.body).length
 
-        var valBody = Object.keys(req.body).length
-        
-        if(valBody === 0){
-            return res.json('')
-        }else{
-            var idOrderService = await req.body.event.idOrdemServico
-            var codClient = req.body.event.idCliente
-            var client = await SearchInformationClient(codClient)
-            var nameClient = client.razao_social
-            var linkOrderService = await SearchLinkOrderService(idOrderService)
-            var linkOrderService = linkOrderService.cLinkPortal
-            var invoice = await SearchInvoiceServices(idOrderService)
-            var numberInvoice = invoice.Cabecalho.nNumeroNFSe
-            var valueInvoice = invoice.Cabecalho.nValorNFSe.toLocaleString('pt-br', {style: 'currency', currency: 'BRL'})
-            var account = await SearchAccountReceive(idOrderService)
-            var dueDate = account.data_vencimento
-            var numberTelefone = "+55" + client.telefone1_ddd + client.telefone1_numero
-        
-            var message = `
-                Olá ${nameClient}!\n\nA nota fiscal ${numberInvoice} com vencimento em ${dueDate} no valor de ${valueInvoice} está disponível!\n\n*Clique no link para acessar a Nota Fiscal/Boleto*\n${linkOrderService}`
-        
-            MessageText(numberTelefone, message)
-        
-            res.status(200).json({message: req.body})
-        }
-    })
+    if(valBody === 0){
+        return res.json('')
+    }else{
+        var fileNameLog = `${__dirname}/webhook/response/${newDate}.json`  
+        writeJson({data: req.body, fileName: fileNameLog})
+    
+        return res.status(200).json(req.body)
+    }
+
+})
 
 
 app.listen(port, () => console.log('Server is running on port ', port))
